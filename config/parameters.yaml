@@ -1,44 +1,98 @@
-# 物理参数
-pi = math.pi  # 圆周率
-g = 9.81  # 重力加速度，单位：m/s^2
-v_w = -10  # 风速，单位：m/s
-b = 200  # 无人机平飞高度，单位：m
-rho = 1.225  # 空气密度 单位：kg/m^3
+# ========================== 物理参数 ==========================
+physical:
+  pi: 3.141592653589793  # 圆周率
+  g: 9.81                # 重力加速度，单位：m/s^2
+  v_w: -10               # 风速，单位：m/s
+  b: 200                 # 无人机平飞高度，单位：m
+  rho: 1.225             # 空气密度 单位：kg/m^3
 
-# 无人机参数
-m_d = 32  # 无人机质量，单位：kg
-m_p_max = 10  # 无人机最大载荷，单位：kg
-v_u = 4  # 无人机起飞速度，单位：m/s
-v_d = 3  # 无人机降落速度，单位：m/s
-v_h = 14  # 无人机水平飞行速度，单位：m/s
-A = 1.7  # 无人机横截面积，单位：m^2
-Ah = 1  # 无人机平飞时大约截面积，单位：m^2
-r = 0.47  # 螺旋桨半径，单位：m
-Ap = pi * r**2  # 螺旋桨面积，单位：m^2
-N = 8  # 螺旋桨数量
-E_total = 7668320   # 总电池容量，单位：J
+# ========================== 无人机参数 ==========================
+drone:
+  # 无人机基本参数
+  mass: 32               # 无人机质量，单位：kg
+  max_payload: 10        # 无人机最大载荷，单位：kg
+  takeoff_speed: 4       # 无人机起飞速度，单位：m/s
+  landing_speed: 3       # 无人机降落速度，单位：m/s
+  cruise_speed: 14       # 无人机水平飞行速度，单位：m/s
+  
+  # 无人机几何参数
+  cross_section: 1.7     # 无人机横截面积，单位：m^2
+  cruise_cross_section: 1.0  # 无人机平飞时大约截面积，单位：m^2
+  propeller_radius: 0.47 # 螺旋桨半径，单位：m
+  propeller_count: 8     # 螺旋桨数量
+  
+  # 能源参数
+  battery_energy: 7668320  # 总电池容量，单位：J
+  
+  # 比值与系数
+  efficiency: 0.85       # 无人机电机功率传输效率
+  drag_coefficient: 0.7  # 无人机阻力系数
+  thrust_coefficient: 0.04  # 无人机推力系数
+  electricity_consumption_rate: 0.8  # 执行任务时消耗的电量比例
 
-# 比值与系数
-eta = 0.85  # 无人机电机功率传输效率
-Cd = 0.7  # 无人机阻力系数
-Ct = 0.04 # 无人机推力系数
-electricity_consumption_rate = 0.8  # 执行任务时消耗的电量比例
+# ========================== 模型参数 ==========================
+model:
+  # 覆盖与连通参数
+  cover_K: 1000          # 覆盖任务参数
+  relay_K: 1000          # 接力任务参数
+  
+  # 成本参数
+  cost_multiplier: 5000  # 成本比例系数
+  fixed_cost: 150000     # 固定成本
+  
+  # 优化目标
+  target_coverage: 0.95  # 目标覆盖率
+  
+  # 高程参数
+  elevation_min: -41     # 最低高程高度
+  
+  # 避障参数
+  max_obstacle_count: 10  # 最大避障次数限制
+  max_obstacle_threshold: 10  # 最大避障阈值
+  
+  # 网格化参数
+  grid_size: 300         # 定义grid_size
 
-# 模型参数
-cover_K = 1000
-relay_K = 1000
-cost_multiplier=5000   # 成本比例系数
-fixed_cost = 150000  # 固定成本
-target_coverage_percentage = 0.95   # 覆盖率
-elevation_min = -41   # 最低高程高度
-MAX_OBSTACLE_COUNT = 10  # 最大避障次数限制
-MAX_OBSTACLE_THRESHOLD = 10
-grid_size = 300  # 定义grid_size
+# ========================== 数据文件路径 ==========================
+data_files:
+  # 区域设置
+  district: "全部区"      # 分析区域
+  
+  # 文件路径（会根据district自动构建）
+  city_shapefile: "data/geojson/全部区.geojson"        # 城市边界文件
+  station_file: "data/stations/全部区stations.xlsx"    # 起降点数据文件
+  demand_file: "data/demand_points/全部区demand_points.xlsx"  # 需求点数据文件
+  elevation_file: "data/等高线.geojson"                # 等高线数据文件
+  building_file: "data/building.xlsx"                  # 建筑数据文件
 
-# 数据文件路径
-District = '全部区'
-city_shapefile = f"geojson/{District}.geojson"
-station_file = f"stations/{District}stations.xlsx"
-demand_file = f"demand_points/{District}demand_points.xlsx"
-elevation_file = "等高线.geojson"
-building_file = "building.xlsx"
+# ========================== 算法参数 ==========================
+algorithm:
+  # 批处理参数
+  batch_size: 5000       # 批处理大小
+  
+  # 可视化参数
+  enable_realtime_visualization: true  # 启用实时可视化
+  
+  # 缓存参数
+  use_cache: true        # 使用缓存
+  
+  # 剪枝参数
+  coverage_tolerance: 0.000  # 覆盖率容忍度
+  
+  # 性能参数
+  max_stagnation_iterations: 100  # 最大停滞迭代次数
+  max_repair_iterations: 10       # 最大修复迭代次数
+
+# ========================== 可视化参数 ==========================
+visualization:
+  # 3D可视化参数
+  sample_rate: 0.01      # 采样率
+  aspect_ratio: [5, 5, 2] # 纵横比
+  ground_color: [0.5, 0.0, 0.5, 1.0]  # 地面颜色
+  selected_color: [1.0, 0.0, 0.0, 1.0]  # 选中颜色
+  batch_size_3d: 20000   # 3D批处理大小
+  max_z: 400             # 最大Z轴显示范围
+  
+  # 2D可视化参数
+  heatmap_grid_size: 2000  # 热力图网格大小
+  compass_fontsize: 18   # 指北针字体大小

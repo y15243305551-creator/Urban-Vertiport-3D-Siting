@@ -10,18 +10,43 @@ from collections import defaultdict
 class DataLoader:
     """数据加载和预处理类"""
     
-    def __init__(self, city_shapefile, station_file, demand_file, building_file, elevation_file, district='全部区'):
-        self.city_shapefile = city_shapefile
-        self.station_file = station_file
-        self.demand_file = demand_file
-        self.building_file = building_file
-        self.elevation_file = elevation_file
-        self.district = district
+    def __init__(self, config=None, city_shapefile=None, station_file=None, 
+                 demand_file=None, building_file=None, elevation_file=None, district=None):
+        """
+        初始化数据加载器
         
-        # 参数设置
-        self.cost_multiplier = 5000
-        self.fixed_cost = 150000
-        self.b = 200  # 平飞高度
+        支持两种初始化方式：
+        1. 通过config字典
+        2. 通过单独的文件路径参数
+        """
+        if config is not None:
+            # 从配置字典初始化
+            from .utils import build_data_paths
+            paths = build_data_paths(config)
+            self.city_shapefile = paths['city_shapefile']
+            self.station_file = paths['station_file']
+            self.demand_file = paths['demand_file']
+            self.building_file = paths['building_file']
+            self.elevation_file = paths['elevation_file']
+            self.district = config['data_files']['district']
+        else:
+            # 从单独参数初始化
+            self.city_shapefile = city_shapefile
+            self.station_file = station_file
+            self.demand_file = demand_file
+            self.building_file = building_file
+            self.elevation_file = elevation_file
+            self.district = district if district else '全部区'
+        
+        # 从配置或默认值获取参数
+        if config and 'model' in config:
+            self.cost_multiplier = config['model'].get('cost_multiplier', 5000)
+            self.fixed_cost = config['model'].get('fixed_cost', 150000)
+            self.b = config['physical'].get('b', 200)
+        else:
+            self.cost_multiplier = 5000
+            self.fixed_cost = 150000
+            self.b = 200
         
     def gcj02_to_utm(self, lons, lats):
         """坐标转换函数"""

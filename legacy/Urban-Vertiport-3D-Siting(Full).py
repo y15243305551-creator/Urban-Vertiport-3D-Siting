@@ -26,9 +26,6 @@ from vispy.visuals import transforms
 from vispy.color import Colormap
 import psutil
 import matplotlib.animation as animation
-import sys
-import hashlib
-import json
 import multiprocessing as mp
 
 # 字体设置（只在主进程中执行）

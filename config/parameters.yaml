@@ -1,0 +1,44 @@
+# 物理参数
+pi = math.pi  # 圆周率
+g = 9.81  # 重力加速度，单位：m/s^2
+v_w = -10  # 风速，单位：m/s
+b = 200  # 无人机平飞高度，单位：m
+rho = 1.225  # 空气密度 单位：kg/m^3
+
+# 无人机参数
+m_d = 32  # 无人机质量，单位：kg
+m_p_max = 10  # 无人机最大载荷，单位：kg
+v_u = 4  # 无人机起飞速度，单位：m/s
+v_d = 3  # 无人机降落速度，单位：m/s
+v_h = 14  # 无人机水平飞行速度，单位：m/s
+A = 1.7  # 无人机横截面积，单位：m^2
+Ah = 1  # 无人机平飞时大约截面积，单位：m^2
+r = 0.47  # 螺旋桨半径，单位：m
+Ap = pi * r**2  # 螺旋桨面积，单位：m^2
+N = 8  # 螺旋桨数量
+E_total = 7668320   # 总电池容量，单位：J
+
+# 比值与系数
+eta = 0.85  # 无人机电机功率传输效率
+Cd = 0.7  # 无人机阻力系数
+Ct = 0.04 # 无人机推力系数
+electricity_consumption_rate = 0.8  # 执行任务时消耗的电量比例
+
+# 模型参数
+cover_K = 1000
+relay_K = 1000
+cost_multiplier=5000   # 成本比例系数
+fixed_cost = 150000  # 固定成本
+target_coverage_percentage = 0.95   # 覆盖率
+elevation_min = -41   # 最低高程高度
+MAX_OBSTACLE_COUNT = 10  # 最大避障次数限制
+MAX_OBSTACLE_THRESHOLD = 10
+grid_size = 300  # 定义grid_size
+
+# 数据文件路径
+District = '全部区'
+city_shapefile = f"geojson/{District}.geojson"
+station_file = f"stations/{District}stations.xlsx"
+demand_file = f"demand_points/{District}demand_points.xlsx"
+elevation_file = "等高线.geojson"
+building_file = "building.xlsx"
